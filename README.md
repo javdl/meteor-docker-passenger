@@ -57,7 +57,7 @@ sudo docker tag myapp tutum.co/USERNAME/myappname:v1 &&
 sudo docker push tutum.co/USERNAME/myappname:v1
 ```
 
-## Automation with Wercker
+## Bonus: Automation with Wercker
 
 Add repo in Wercker
 Make a commit!
