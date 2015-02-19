@@ -1,0 +1,43 @@
+box: oskarszoon/meteor-ci@1.0.3-1
+build:
+  steps:
+    - script:
+        name: echo nodejs information
+        code: |
+          echo "node version $(node -v) running"
+          echo "npm version $(npm -v) runnin:g"
+    - script:
+        name: install jshint
+        code: sudo npm install jshint -g
+    - script:
+        name: install mup
+        code: sudo npm install mup -g
+    - script:
+        name: run jshint
+        code: jshint .
+  after-steps:
+        - wantedly/pretty-slack-notify:
+            webhook_url: $SLACK_WEBHOOK_URL
+deploy:
+  steps:
+    - script:
+        name: Make .SSH directory
+        code: mkdir -p "$HOME/.ssh"
+    - create-file:
+        name: Write SSH key
+        filename: $HOME/.ssh/id_rsa
+        overwrite: true
+        content: $FOO_PRIVATE
+        hide-from-log: true
+    - script:
+        name: Set permissions for SSH key
+        code: |-
+          chmod 0400 $HOME/.ssh/id_rsa
+    - script:
+        name: mup deploy
+        code: |
+          cd $WERCKER_ROOT/.deploy/production
+          mup deploy
+  after-steps:
+        - wantedly/pretty-slack-notify:
+            webhook_url: $SLACK_WEBHOOK_URL

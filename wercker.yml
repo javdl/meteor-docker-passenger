@@ -1,0 +1,13 @@
+box: wercker-labs/docker
+build:
+  steps:
+    - nhuray/docker-build:
+        tag: tutum.co/joost/meteor-docker-passenger:${WERCKER_GIT_COMMIT:0:7}
+deploy:
+  steps:
+    - nhuray/docker-push:
+        image: tutum.co/joost/meteor-docker-passenger:${WERCKER_GIT_COMMIT:0:7}
+        registry: tutum.co
+        email: example@example.com
+        password: $TUTUM_PASS
+        username: fujoost
