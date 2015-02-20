@@ -66,9 +66,9 @@ Make a commit!
 Build and test a Docker image. Remember to add the necessary -e environment variables.
 
 ```shell
-rm -rf deploy/bundle &&
+rm -rf .deploy/bundle &&
 meteor build --directory deploy &&
 sudo docker build -t myapp . &&
-rm -rf deploy/bundle &&
+rm -rf .deploy/bundle &&
 sudo docker run -i -p 80:80 -t myapp /sbin/my_init /bin/bash 
 ```

@@ -45,7 +45,7 @@ RUN rm /etc/nginx/sites-enabled/default
 
 RUN mkdir /home/app/webapp
 #RUN ...commands to place your web app bundle in /home/app/webapp...
-ADD ./deploy /home/app/webapp
+ADD ./.deploy /home/app/webapp
 
 # enable NGINX
 RUN rm -f /etc/service/nginx/down
