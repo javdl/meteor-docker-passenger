@@ -40,7 +40,8 @@ docker run -d \
     myapp
 ```
 
-Run it locally and see what's happening in the shell
+Run it local and see what's happening in the shell
+
 ```shell
 docker build -t myapp . &&
 docker run -i \
@@ -51,7 +52,8 @@ docker run -i \
     myapp /sbin/my_init /bin/bash
 ```
 
-## Run it locally with a Compose.io hosted MongoDB
+## Run it local with a Compose.io hosted MongoDB
+
 ```shell
 docker build -t myapp . &&
 docker run -i \
@@ -78,7 +80,7 @@ Build and test a Docker image. Remember to add the necessary -e environment vari
 
 ```shell
 rm -rf .deploy/bundle &&
-meteor build --directory deploy &&
+meteor build --directory .deploy &&
 sudo docker build -t myapp . &&
 rm -rf .deploy/bundle &&
 docker run -i -p 80:80 -t myapp /sbin/my_init /bin/bash 
