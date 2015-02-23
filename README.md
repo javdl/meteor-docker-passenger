@@ -1,4 +1,9 @@
 # meteor-docker-passenger
+
+TO-DO
+* Test PhantomJS & spiderable for SEO
+
+
 This repository takes a Meteor bundle and makes it run in Docker with the use of the terrific &amp; battle-tested Phusion Passenger Docker baseimage. It will create a production-ready Docker image with your Meteor app in it.
 The advantages of using the Phusion Passenger Docker image are numerous.
 
