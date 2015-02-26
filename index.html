@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Meteor-docker-passenger by Joostvanderlaan</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Meteor-docker-passenger</h1>
+        <h2>This repository takes a Meteor bundle and makes it run in Docker with the use of the terrific &amp; battle-tested Phusion Passenger Docker baseimage.</h2>
+        <a href="https://github.com/Joostvanderlaan/meteor-docker-passenger" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="meteor-docker-passenger" class="anchor" href="#meteor-docker-passenger" aria-hidden="true"><span class="octicon octicon-link"></span></a>meteor-docker-passenger</h1>
+
+<p>TO-DO</p>
+
+<ul>
+<li>Test PhantomJS &amp; spiderable for SEO</li>
+</ul>
+
+<p>This repository takes a Meteor bundle and makes it run in Docker with the use of the terrific &amp; battle-tested Phusion Passenger Docker baseimage. It will create a production-ready Docker image with your Meteor app in it.
+The advantages of using the Phusion Passenger Docker image are numerous.</p>
+
+<p>Why use passenger-docker instead of doing everything yourself in Dockerfile?</p>
+
+<ul>
+<li>Your Dockerfile can be smaller.</li>
+<li>It reduces the time needed to write a correct Dockerfile. You won't have to worry about the base system and the stack, you can focus on just your app.</li>
+<li>It sets up the base system <strong>correctly</strong>. It's very easy to get the base system wrong, but this image does everything correctly. <a href="https://github.com/phusion/baseimage-docker#contents">Learn more.</a>
+</li>
+<li>It drastically reduces the time needed to run <code>docker build</code>, allowing you to iterate your Dockerfile more quickly.</li>
+<li>
+<p>It reduces download time during redeploys. Docker only needs to download the base image once: during the first deploy. On every subsequent deploys, only the changes you make on top of the base image are downloaded.</p>
+
+<p>And for Meteor in specific:</p>
+</li>
+<li>It allows making use of multi-core and multi-threading.</li>
+<li>Works great for creating a Microservices based application.</li>
+</ul>
+
+<h2>
+<a id="quick-start" class="anchor" href="#quick-start" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quick Start</h2>
+
+<div class="highlight highlight-shell"><pre>docker run -d \
+    -e ROOT_URL=http://yourapp.com \
+    -e MONGO_URL=mongodb://url \
+    -e MONGO_OPLOG_URL=mongodb://oplog_url \
+    -v /dir_containing_bundledir:/home/app/webapp \
+    -p 80:80 \
+    joostlaan/meteor-docker-passenger</pre></div>
+
+<h2>
+<a id="build--run-it-locally" class="anchor" href="#build--run-it-locally" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build + Run it locally</h2>
+
+<p>First step is always to put your Meteor bundle in the deploy directory. You could also download the zip for this repository from github and add the files to your Meteor project.</p>
+
+<div class="highlight highlight-shell"><pre>docker build -t myapp <span class="pl-s3">.</span> <span class="pl-k">&amp;&amp;</span>
+docker run -d \
+    -e ROOT_URL=http://yourapp.com \
+    -e MONGO_URL=mongodb://url \
+    -e MONGO_OPLOG_URL=mongodb://oplog_url \
+    -p 80:80 \
+    myapp</pre></div>
+
+<p>Run it local and see what's happening in the shell</p>
+
+<div class="highlight highlight-shell"><pre>docker build -t myapp <span class="pl-s3">.</span> <span class="pl-k">&amp;&amp;</span>
+docker run -i \
+    -e ROOT_URL=http://yourapp.com \
+    -e MONGO_URL=mongodb://url \
+    -e MONGO_OPLOG_URL=mongodb://oplog_url \
+    -p 80:80 \
+    myapp /sbin/my_init /bin/bash</pre></div>
+
+<h2>
+<a id="run-it-local-with-a-composeio-hosted-mongodb" class="anchor" href="#run-it-local-with-a-composeio-hosted-mongodb" aria-hidden="true"><span class="octicon octicon-link"></span></a>Run it local with a Compose.io hosted MongoDB</h2>
+
+<div class="highlight highlight-shell"><pre>docker build -t myapp <span class="pl-s3">.</span> <span class="pl-k">&amp;&amp;</span>
+docker run -i \
+    -e ROOT_URL=http://localhost \
+    -e MONGO_URL=mongodb://USER:PASS@whitney.0.mongolayer.com:PORT,whitney.1.mongolayer.com:PORT/DBNAME \
+    -e MONGO_OPLOG_URL=mongodb://USER:PASS@whitney.0.mongolayer.com:PORT,whitney.1.mongolayer.com:PORT/local<span class="pl-k">?</span>authSource=DBNAME \
+    -p 80:80 \
+    myapp /sbin/my_init /bin/bash </pre></div>
+
+<p>Tag the image, give it a version &amp; push the image to the Tutum.co private Docker repository</p>
+
+<div class="highlight highlight-shell"><pre>docker tag myapp tutum.co/USERNAME/myappname:v1 <span class="pl-k">&amp;&amp;</span>
+docker push tutum.co/USERNAME/myappname:v1</pre></div>
+
+<h2>
+<a id="bonus-automation-with-wercker" class="anchor" href="#bonus-automation-with-wercker" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bonus: Automation with Wercker</h2>
+
+<p>Add repo in Wercker
+Make a commit!</p>
+
+<h2>
+<a id="build-a-docker-image" class="anchor" href="#build-a-docker-image" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build a Docker image</h2>
+
+<p>Build and test a Docker image. Remember to add the necessary -e environment variables.</p>
+
+<div class="highlight highlight-shell"><pre>rm -rf .deploy/bundle <span class="pl-k">&amp;&amp;</span>
+meteor build --directory .deploy <span class="pl-k">&amp;&amp;</span>
+sudo docker build -t myapp <span class="pl-s3">.</span> <span class="pl-k">&amp;&amp;</span>
+rm -rf .deploy/bundle <span class="pl-k">&amp;&amp;</span>
+docker run -i -p 80:80 -t myapp /sbin/my_init /bin/bash </pre></div>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/Joostvanderlaan/meteor-docker-passenger/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/Joostvanderlaan/meteor-docker-passenger/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/Joostvanderlaan/meteor-docker-passenger"></a> is maintained by <a href="https://github.com/Joostvanderlaan">Joostvanderlaan</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-1617166-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
