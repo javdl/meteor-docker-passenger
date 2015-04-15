@@ -1,4 +1,4 @@
-# meteor-docker-passenger
+# Easily run Meteor on the excellent Phusion Passenger Docker image
 
 TO-DO
 * Test PhantomJS & spiderable for SEO
