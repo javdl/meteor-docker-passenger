@@ -35,14 +35,14 @@ RUN npm install semver
 RUN npm install bson
 
 # Deploy the Nginx configuration file for webapp
-ONBUILD ADD docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
-ONBUILD ADD docker/meteor-env.conf /etc/nginx/main.d/meteor-env.conf
+ONBUILD COPY docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
+ONBUILD COPY docker/meteor-env.conf /etc/nginx/main.d/meteor-env.conf
 
 # Remove default nginx host to make the app listen on all domain names
 RUN rm /etc/nginx/sites-enabled/default
 
 RUN mkdir /home/app/webapp
-ONBUILD ADD ./.deploy /home/app/webapp
+ONBUILD COPY ./.deploy /home/app/webapp
 
 # enable NGINX
 RUN rm -f /etc/service/nginx/down
