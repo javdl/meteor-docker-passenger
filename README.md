@@ -1,4 +1,9 @@
-# meteor-docker-passenger
+# Easily run Meteor on the excellent Phusion Passenger Docker image
+
+TO-DO
+* Test PhantomJS & spiderable for SEO
+
+
 This repository takes a Meteor bundle and makes it run in Docker with the use of the terrific &amp; battle-tested Phusion Passenger Docker baseimage. It will create a production-ready Docker image with your Meteor app in it.
 The advantages of using the Phusion Passenger Docker image are numerous.
 
@@ -14,13 +19,24 @@ Why use passenger-docker instead of doing everything yourself in Dockerfile?
  * It allows making use of multi-core and multi-threading.
  * Works great for creating a Microservices based application.
 
+## Quick Start
 
-## Run it locally
+```shell
+docker run -d \
+    -e ROOT_URL=http://yourapp.com \
+    -e MONGO_URL=mongodb://url \
+    -e MONGO_OPLOG_URL=mongodb://oplog_url \
+    -v /dir_containing_bundledir:/home/app/webapp \
+    -p 80:80 \
+    joostlaan/meteor-docker-passenger
+```
+
+## Build + Run it locally
 
 First step is always to put your Meteor bundle in the deploy directory. You could also download the zip for this repository from github and add the files to your Meteor project.
 
 ```shell
-sudo docker build -t myapp . &&
+docker build -t myapp . &&
 docker run -d \
     -e ROOT_URL=http://yourapp.com \
     -e MONGO_URL=mongodb://url \
@@ -29,9 +45,10 @@ docker run -d \
     myapp
 ```
 
-Run it locally and see what's happening in the shell
+Run it local and see what's happening in the shell
+
 ```shell
-sudo docker build -t myapp . &&
+docker build -t myapp . &&
 docker run -i \
     -e ROOT_URL=http://yourapp.com \
     -e MONGO_URL=mongodb://url \
@@ -40,9 +57,10 @@ docker run -i \
     myapp /sbin/my_init /bin/bash
 ```
 
-## Run it locally with a Compose.io hosted MongoDB
+## Run it local with a Compose.io hosted MongoDB
+
 ```shell
-sudo docker build -t myapp . &&
+docker build -t myapp . &&
 docker run -i \
     -e ROOT_URL=http://localhost \
     -e MONGO_URL=mongodb://USER:PASS@whitney.0.mongolayer.com:PORT,whitney.1.mongolayer.com:PORT/DBNAME \
@@ -53,8 +71,8 @@ docker run -i \
 
 Tag the image, give it a version & push the image to the Tutum.co private Docker repository
 ```shell
-sudo docker tag myapp tutum.co/USERNAME/myappname:v1 &&
-sudo docker push tutum.co/USERNAME/myappname:v1
+docker tag myapp tutum.co/USERNAME/myappname:v1 &&
+docker push tutum.co/USERNAME/myappname:v1
 ```
 
 ## Bonus: Automation with Wercker
@@ -66,9 +84,9 @@ Make a commit!
 Build and test a Docker image. Remember to add the necessary -e environment variables.
 
 ```shell
-rm -rf deploy/bundle &&
-meteor build --directory deploy &&
+rm -rf .deploy/bundle &&
+meteor build --directory .deploy &&
 sudo docker build -t myapp . &&
-rm -rf deploy/bundle &&
-sudo docker run -i -p 80:80 -t myapp /sbin/my_init /bin/bash 
+rm -rf .deploy/bundle &&
+docker run -i -p 80:80 -t myapp /sbin/my_init /bin/bash 
 ```
