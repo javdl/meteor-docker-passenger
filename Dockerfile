@@ -46,7 +46,7 @@ RUN mkdir /home/app/webapp
 # Deploy the Nginx configuration file for webapp
 ONBUILD COPY docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
 ONBUILD COPY docker/meteor-env.conf /etc/nginx/main.d/meteor-env.conf
-ONBUILD ADD ./deploy/bundle /home/app/webapp
+ONBUILD ADD ./.deploy/bundle /home/app/webapp
 
 # enable NGINX
 RUN rm -f /etc/service/nginx/down
