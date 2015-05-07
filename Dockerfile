@@ -36,16 +36,19 @@ RUN npm install source-map-support
 RUN npm install semver
 RUN npm install bson
 
+# Add some testing tools
+RUN npm install jshint -g
+
 # Deploy the Nginx configuration file for webapp
-ADD docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
-ADD docker/meteor-env.conf /etc/nginx/main.d/meteor-env.conf
+ONBUILD COPY docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
+ONBUILD COPY docker/meteor-env.conf /etc/nginx/main.d/meteor-env.conf
 
 # Remove default nginx host to make the app listen on all domain names
 RUN rm /etc/nginx/sites-enabled/default
 
 RUN mkdir /home/app/webapp
 #RUN ...commands to place your web app bundle in /home/app/webapp...
-ADD ./deploy /home/app/webapp
+ONBUILD COPY ./deploy/bundle /home/app/webapp
 
 # enable NGINX
 RUN rm -f /etc/service/nginx/down
